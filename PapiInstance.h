@@ -20,6 +20,7 @@ class PapiInstance{
 	private:
 
 		void mapValuesToMapEntries(const std::vector<long long> &vals);
+
 		friend class Papi;
 		PapiInstance();
 		PapiInstance(const PapiInstance &other) = delete;

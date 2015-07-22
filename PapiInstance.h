@@ -8,7 +8,11 @@
 #include <map>
 #include <cassert>
 
-
+/**
+ * This class is the interface to take measurements using the PAPI performance counters.
+ * It let's you add an event you want to capture.
+ * 
+ */
 class PapiInstance{
 	public:
 		void addEvent(int event);
@@ -31,7 +35,10 @@ class PapiInstance{
 		std::map<int, long long> eventValMap;
 };
 
-
+/**
+ * The class is used to obtain an instance of the PapiInstance class, 
+ * which gives you access to the PAPI functionality itself.
+ */
 class Papi {
 	public:
 		PapiInstance *create();

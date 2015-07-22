@@ -20,3 +20,7 @@ test: test.cpp
 
 check: test
 	./test-libpapicpp 12353
+
+
+clean:
+	rm libpapicpp.so test-libpapicpp

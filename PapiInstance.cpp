@@ -20,6 +20,15 @@ PapiInstance::PapiInstance() : eventSet(PAPI_NULL){
 	}
 }
 
+PapiInstance::~PapiInstance(){
+	std::vector<long long> vals(eventValMap.size());
+	if(PAPI_stop(eventSet, vals.data()) != PAPI_OK){
+		// Do some error handling here?
+	}
+	assert(vals.size() == eventRegChain.size() && "As many results as events");
+	mapValuesToMapEntries(vals);
+}
+
 void PapiInstance::addEvent(int event){
 	if(PAPI_add_event(eventSet, event) != PAPI_OK){
 		throw std::string("Adding the event failed.");
@@ -41,6 +50,10 @@ void PapiInstance::stop(){
 	}
 	assert(vals.size() == eventRegChain.size() && "As many results as events");
 	mapValuesToMapEntries(vals);
+}
+	
+void PapiInstance::reset() {
+	throw std::string("[ERROR IN PAPI WRAPPER] Not yet implemented.");
 }
 
 void PapiInstance::read(){
@@ -65,3 +78,5 @@ long long PapiInstance::getEventValue(int event){
 
 	return eventValMap[event];
 }
+
+Papi::Papi() : instance(nullptr) {}

@@ -1,8 +1,19 @@
 #include "PapiInstance.h"
 
+#ifdef _LIB_MONITOR_
+void *monitor_init_process(int *argc, char **argv, void *data){
+	PapiW_start();
+	return NULL;
+}
+
+void monitor_fini_process(int how, void *data){
+	PapiW_stopAndPrint();
+}
+#endif
+
 PapiInstance *Papi::create(){
 	if(instance == nullptr){
-		instance.reset(new PapiInstance());
+			instance.reset(new PapiInstance());
 	}
 	return instance.get();
 }

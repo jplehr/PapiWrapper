@@ -21,8 +21,8 @@ lib: $(SOURCES)
 lib-monitor: $(SOURCES)
 	$(CXX) -D_LIB_MONITOR_ $(CXXFLAGS) $(SOURCES) -o libpapicpp.monitor.$(CXX).so $(LDFLAGS)
 
-test: test.cpp lib
-	$(CXX) -std=c++11 -I$(PAPI_INC_DIR) test.cpp -o test-libpapicpp -L. -lpapicpp.$(CXX) $(LDFLAGS)
+example: example.cpp lib
+	$(CXX) -std=c++14 -I$(PAPI_INC_DIR) example.cpp -o example-libpapicpp -L. -lpapicpp.$(CXX) $(LDFLAGS)
 
 lib-static: $(SOURCES)
 	$(CXX) -g -std=c++14 -I$(PAPI_INC_DIR) $(SOURCES) -c -o libpapicpp.g++.st.o 
@@ -30,11 +30,12 @@ lib-static: $(SOURCES)
 empty_measurement: empty_measurement.c
 	$(CC) -g --shared -fPIC -I. empty_measurement.c -o libem.so
 
-check: test
-	./test-libpapicpp 123533
+run-example: example
+	export LD_LIBRARY_PATH=`pwd`:$(LD_LIBRARY_PATH)
+	./example-libpapicpp 123533
 
 clean:
-	rm libpapicpp.so test-libpapicpp
+	rm libpapicpp.$(CXX).so example-libpapicpp libpapicpp.monitor.$(CXX).so
 
 clean-all:
 	rm libpapicpp.* test-libpapicpp libem.so

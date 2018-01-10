@@ -3,6 +3,7 @@
 
 #include "papi.h"
 
+#include <cstdio>
 #include <cassert>
 #include <iostream>
 #include <map>
@@ -64,6 +65,9 @@ extern "C" {
 #ifdef _LIB_MONITOR_
 #define CTOR_ATTRIBUTE __attribute__((no_instrument_function))
 #define DTOR_ATTRIBUTE __attribute__((no_instrument_function))
+#elif _NO_CTOR_ATTR
+#define CTOR_ATTRIBUTE __attribute__((no_instrument_function))
+#define DTOR_ATTRIBUTE __attribute__((no_instrument_function))
 #else
 #define CTOR_ATTRIBUTE __attribute__((constructor, no_instrument_function))
 #define DTOR_ATTRIBUTE __attribute__((destructor, no_instrument_function))
@@ -79,19 +83,4 @@ void monitor_fini_process(int how, void *data);
 }
 
 
-void PapiW_start() {
-  PapiInstance *instance = papi.create();
-  instance->addEvent(PAPI_TOT_INS);
-  instance->addEvent(PAPI_L1_DCM);
-  instance->start();
-}
-
-void PapiW_stopAndPrint() {
-  PapiInstance *instance = papi.create();
-  instance->stop();
-  std::cout << "\nThe measured total instructions were: "
-            << instance->getEventValue(PAPI_TOT_INS) << "\n";
-  std::cout << "Collected L1 Data Cache Misses: "
-            << instance->getEventValue(PAPI_L1_DCM) << std::endl;
-}
 #endif

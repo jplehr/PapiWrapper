@@ -8,7 +8,7 @@ int main(int argc, char **argv) {
   const int loopLimit(10000);
 
   Papi papi;
-  PapiInstance *instance = papi.create();
+  auto instance = papi.create();
 
   instance->addEvent(PAPI_TOT_INS);
   instance->addEvent(PAPI_BR_MSP);

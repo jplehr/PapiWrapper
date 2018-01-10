@@ -3,8 +3,8 @@
 
 #include "papi.h"
 
-#include <cstdio>
 #include <cassert>
+#include <cstdio>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -59,7 +59,6 @@ private:
 
 static Papi papi;
 
-
 extern "C" {
 
 #ifdef _LIB_MONITOR_
@@ -73,14 +72,18 @@ extern "C" {
 #define DTOR_ATTRIBUTE __attribute__((destructor, no_instrument_function))
 #endif
 
+/**
+ * These two functions are used in an LD_PRELOAD setting
+ */
 void PapiW_start() CTOR_ATTRIBUTE;
 void PapiW_stopAndPrint() DTOR_ATTRIBUTE;
+
+/** -------- */
 
 #ifdef _LIB_MONITOR_
 void *monitor_init_process(int *argc, char **argv, void *data);
 void monitor_fini_process(int how, void *data);
 #endif
 }
-
 
 #endif

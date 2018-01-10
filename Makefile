@@ -37,6 +37,6 @@ run-example: example
 clean:
 	rm libpapicpp.$(CXX).so example-libpapicpp libpapicpp.monitor.$(CXX).so
 
-clean-all:
-	rm libpapicpp.* test-libpapicpp libem.so
+clean-all: clean
+	rm libpapicpp.* example-libpapicpp libem.so
 

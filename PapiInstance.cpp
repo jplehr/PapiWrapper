@@ -10,6 +10,46 @@ void *monitor_init_process(int *argc, char **argv, void *data) {
 void monitor_fini_process(int how, void *data) { PapiW_stopAndPrint(); }
 #endif
 
+// returns -1 if 'LIB_PAPI_EVENT' is not set or set incorrectly
+int getEnvEventCode() {
+  std::map<std::string, int> event_map = {
+    { "BR_CN",   PAPI_BR_CN },
+    { "BR_INS",  PAPI_BR_INS },
+    { "BR_MSP",  PAPI_BR_MSP },
+    { "BR_NTK",  PAPI_BR_NTK },
+    { "FP_INS",  PAPI_FP_INS },
+    { "FP_OPS",  PAPI_FP_OPS },
+    { "L1_DCM",  PAPI_L1_DCM },
+    { "L1_ICM",  PAPI_L1_ICM },
+    { "L2_DCA",  PAPI_L2_DCA },
+    { "L2_DCM",  PAPI_L2_DCM },
+    { "L2_DCR",  PAPI_L2_DCR },
+    { "L2_DCW",  PAPI_L2_DCW },
+    { "L2_ICH",  PAPI_L2_ICH },
+    { "L2_ICM",  PAPI_L3_ICM },
+    { "L2_TCM",  PAPI_L2_TCM },
+    { "L3_TCM",  PAPI_L3_TCM },
+    { "LD_INS",  PAPI_LD_INS },
+    { "SR_INS",  PAPI_SR_INS },
+    { "STL_ICY", PAPI_STL_ICY },
+    { "TLB_IM",  PAPI_TLB_IM },
+    { "TOT_INS", PAPI_TOT_INS },
+    { "VEC_DP",  PAPI_VEC_DP },
+    { "VEC_SP",  PAPI_VEC_SP },
+  };
+
+  const char *env_code = getenv("LIB_PAPI_EVENT");
+
+  if (env_code != NULL) {
+    auto it = event_map.find(getenv("LIB_PAPI_EVENT"));
+
+    if (it != event_map.end())
+      return it->second;
+  }
+
+  return -1;
+}
+
 void PapiW_start() {
   printf("Starting Papi Measurement\n");
   PapiInstance *instance = papi.create();
@@ -18,13 +58,40 @@ void PapiW_start() {
   instance->start();
 }
 
+void PapiW_start() {
+  printf("Starting Papi Measurement\n");
+
+  int env_event_code = getEnvEventCode();
+  if (env_event_code == -1) {
+    std::cout << "WARNING: Environment variable 'LIB_PAPI_EVENT' is ";
+
+    const char *env = getenv("LIB_PAPI_EVENT");
+
+    if (env == NULL) {
+      std::cout << "not set.\n";
+    } else {
+      std::cout << "set to '" << env << "', which is not a valid event.\n";
+    }
+  }
+
+  PapiInstance *instance = papi.create();
+
+  if (env_event_code != -1) {
+    instance->addEvent(env_event_code);
+  }
+
+  instance->start();
+}
+
 void PapiW_stopAndPrint() {
   PapiInstance *instance = papi.create();
   instance->stop();
-  std::cout << "\nThe measured total instructions were: "
-            << instance->getEventValue(PAPI_TOT_INS) << "\n";
-  std::cout << "Collected L1_ICM Events: "
-            << instance->getEventValue(PAPI_L1_ICM) << std::endl;
+  
+  int env_event_code = getEnvEventCode();
+  if (env_event_code != -1) {
+    std::cout << "Collected " << getenv("LIB_PAPI_EVENT") << " Events: "
+              << instance->getEventValue(getEnvEventCode()) << std::endl;
+  }
 }
 
 PapiInstance *Papi::create() {

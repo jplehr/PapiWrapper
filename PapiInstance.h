@@ -77,6 +77,7 @@ extern "C" {
  */
 void PapiW_start() CTOR_ATTRIBUTE;
 void PapiW_stopAndPrint() DTOR_ATTRIBUTE;
+int getEnvEventCode() __attribute__((no_instrument_function));
 
 /** -------- */
 

@@ -52,14 +52,6 @@ int getEnvEventCode() {
 
 void PapiW_start() {
   printf("Starting Papi Measurement\n");
-  PapiInstance *instance = papi.create();
-  instance->addEvent(PAPI_TOT_INS);
-  instance->addEvent(PAPI_L1_ICM);
-  instance->start();
-}
-
-void PapiW_start() {
-  printf("Starting Papi Measurement\n");
 
   int env_event_code = getEnvEventCode();
   if (env_event_code == -1) {

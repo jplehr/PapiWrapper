@@ -1,5 +1,11 @@
 
-PAPI := /opt/papi/install
+# Adjust these two variables to your preference.
+PAPI := /shared/apps/.gcc/4.9/.openmpi/4.0/papi/5.7.0
+#PAPI := /shared/apps/.gcc/9.1/.openmpi/4.0/papi/5.7.0
+#PAPI := /shared/apps/.gcc/8.3/.openmpi/4.0/papi/5.7.0
+COMPILER := gcc4.9.4
+#COMPILER := gcc9.1.0
+#COMPILER := clang10.0.0
 
 PAPI_LIB_DIR = $(PAPI)/lib
 PAPI_INC_DIR = $(PAPI)/include
@@ -16,13 +22,13 @@ SOURCES=PapiInstance.cpp \
 all: lib test empty_measurement lib-monitor
 
 lib: $(SOURCES)
-	$(CXX) $(CXXFLAGS) -D_NO_CTOR_ATTR $(SOURCES) -o libpapicpp.$(CXX).so $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -D_NO_CTOR_ATTR $(SOURCES) -o libpapicpp.$(COMPILER).so $(LDFLAGS)
 
 lib-monitor: $(SOURCES)
-	$(CXX) -D_LIB_MONITOR_ $(CXXFLAGS) $(SOURCES) -o libpapicpp.monitor.$(CXX).so $(LDFLAGS)
+	$(CXX) -D_LIB_MONITOR_ $(CXXFLAGS) $(SOURCES) -o libpapicpp.monitor.$(COMPILER).so $(LDFLAGS)
 
 example: example.cpp lib
-	$(CXX) -std=c++14 -I$(PAPI_INC_DIR) example.cpp -o example-libpapicpp -L. -lpapicpp.$(CXX) $(LDFLAGS)
+	$(CXX) -std=c++14 -I$(PAPI_INC_DIR) example.cpp -o example-libpapicpp -L. -lpapicpp.$(COMPILER) $(LDFLAGS)
 
 lib-static: $(SOURCES)
 	$(CXX) -g -std=c++14 -I$(PAPI_INC_DIR) $(SOURCES) -c -o libpapicpp.g++.st.o 
@@ -35,7 +41,7 @@ run-example: example
 	./example-libpapicpp 123533
 
 clean:
-	rm libpapicpp.$(CXX).so example-libpapicpp libpapicpp.monitor.$(CXX).so
+	rm libpapicpp.$(COMPILER).so example-libpapicpp libpapicpp.monitor.$(COMPILER).so
 
 clean-all: clean
 	rm libpapicpp.* example-libpapicpp libem.so

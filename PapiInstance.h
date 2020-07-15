@@ -20,28 +20,28 @@
  */
 class PapiInstance : public Collector {
 public:
-  void addEvent(int event) __attribute__((no_instrument_function));
-  void start() __attribute__((no_instrument_function));
-  void stop() __attribute__((no_instrument_function));
-  void read() __attribute__((no_instrument_function));
-  void reset() __attribute__((no_instrument_function));
+	void addEvent(int event) __attribute__((no_instrument_function));
+	void start() __attribute__((no_instrument_function));
+	void stop() __attribute__((no_instrument_function));
+	void read() __attribute__((no_instrument_function));
+	void reset() __attribute__((no_instrument_function));
 
-  long long getEventValue(int event) __attribute__((no_instrument_function));
+	long long getEventValue(int event) __attribute__((no_instrument_function));
 
-  ~PapiInstance();
+	~PapiInstance();
 
 private:
-  void mapValuesToMapEntries(const std::vector<long long> &vals)
-      __attribute__((no_instrument_function));
+	void mapValuesToMapEntries(const std::vector<long long> &vals)
+			__attribute__((no_instrument_function));
 
-  friend class Papi;
-  PapiInstance() __attribute((no_instrument_function));
-  PapiInstance(const PapiInstance &other) = delete;
-  PapiInstance operator=(const PapiInstance &other) = delete;
+	friend class Papi;
+	PapiInstance() __attribute((no_instrument_function));
+	PapiInstance(const PapiInstance &other) = delete;
+	PapiInstance operator=(const PapiInstance &other) = delete;
 
-  int eventSet;
-  std::vector<int> eventRegChain;
-  std::map<int, long long> eventValMap;
+	int eventSet;
+	std::vector<int> eventRegChain;
+	std::map<int, long long> eventValMap;
 };
 
 /**
@@ -50,11 +50,11 @@ private:
  */
 class Papi {
 public:
-  Papi() __attribute__((no_instrument_function));
-  PapiInstance *create() __attribute__((no_instrument_function));
+	Papi() __attribute__((no_instrument_function));
+	PapiInstance *create() __attribute__((no_instrument_function));
 
 private:
-  std::unique_ptr<PapiInstance> instance;
+	std::unique_ptr<PapiInstance> instance;
 };
 
 static Papi papi;
@@ -77,7 +77,7 @@ extern "C" {
  */
 void PapiW_start() CTOR_ATTRIBUTE;
 void PapiW_stopAndPrint() DTOR_ATTRIBUTE;
-int getEnvEventCode() __attribute__((no_instrument_function));
+int getEnvEventCode(char *event_code) __attribute__((no_instrument_function));
 
 /** -------- */
 

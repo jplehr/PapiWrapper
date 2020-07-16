@@ -117,8 +117,10 @@ void PapiW_stopAndPrint() {
 	delete[] codes_buffer;
 
 	for (int i = 0; i < results.size(); i++) {
-		std::cout << "Collected " << events.at(i) << " Events: "
-				  << instance->getEventValue(results.at(i)) << std::endl;
+		try {
+			long long v = instance->getEventValue(results.at(i));
+			std::cout << "Collected " << events.at(i) << " Events: " << v << std::endl;
+		} catch (...) {}
 	}
 }
 
@@ -141,6 +143,7 @@ std::string getPAPIError(int err) {
 PapiInstance::PapiInstance() : eventSet(PAPI_NULL) {
 	int returnVal = PAPI_library_init(PAPI_VER_CURRENT);
 
+
 	if ((returnVal != PAPI_VER_CURRENT && returnVal > 0) || returnVal < 0) {
 		throw std::string("The Papi initialization failed");
 	}
@@ -162,7 +165,7 @@ PapiInstance::~PapiInstance() {
 void PapiInstance::addEvent(int event) {
 	int returnval = PAPI_add_event(eventSet, event);
 	if (returnval == PAPI_EINVAL) {
-		throw std::string("Argument error. Maybe some of these events can't be counted at the same time.");
+		throw std::string("Argument error. Maybe you've try measuring less events at the same time.");
 	} else if (returnval == PAPI_ENOMEM) {
 		throw std::string("Insufficient memory to complete the operation.");
 	} else if (returnval == PAPI_ENOEVST) {

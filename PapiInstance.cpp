@@ -12,6 +12,9 @@ void *monitor_init_process(int *argc, char **argv, void *data) {
 void monitor_fini_process(int how, void *data) { PapiW_stopAndPrint(); }
 #endif
 
+// branch: corret psc to prc
+// cache:
+
 // returns -1 if event code does not exist
 int getEnvEventCode(char *event_code) {
 	std::map<std::string, int> event_map = {
@@ -28,6 +31,8 @@ int getEnvEventCode(char *event_code) {
 		{ "L1_ICM",  PAPI_L1_ICM },
 		{ "L1_TCA",  PAPI_L1_TCA },
 		{ "L1_TCM",  PAPI_L1_TCM },
+		{ "L1_LDM",  PAPI_L1_LDM },
+		{ "L1_STM",  PAPI_L1_STM },
 		{ "L2_DCA",  PAPI_L2_DCA },
 		{ "L2_DCM",  PAPI_L2_DCM },
 		{ "L2_DCR",  PAPI_L2_DCR },

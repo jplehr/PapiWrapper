@@ -40,7 +40,7 @@ int getEnvEventCode(char *event_code) {
 		{ "L2_ICH",  PAPI_L2_ICH },
 		{ "L2_ICR",  PAPI_L2_ICR },
 		{ "L2_ICA",  PAPI_L2_ICA },
-		{ "L2_ICM",  PAPI_L3_ICM },
+		{ "L2_ICM",  PAPI_L2_ICM },
 		{ "L2_TCA",  PAPI_L2_TCA },
 		{ "L2_TCM",  PAPI_L2_TCM },
 		{ "L2_TCR",  PAPI_L2_TCR },

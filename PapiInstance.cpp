@@ -65,6 +65,7 @@ int getEnvEventCode(char *event_code) {
 		{ "STL_ICY", PAPI_STL_ICY },
 		{ "TLB_IM",  PAPI_TLB_IM },
 		{ "TOT_INS", PAPI_TOT_INS },
+		{ "TOT_CYC", PAPI_TOT_CYC },
 		{ "VEC_DP",  PAPI_VEC_DP },
 		{ "VEC_SP",  PAPI_VEC_SP },
 	};

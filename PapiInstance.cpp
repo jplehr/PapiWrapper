@@ -12,9 +12,6 @@ void *monitor_init_process(int *argc, char **argv, void *data) {
 void monitor_fini_process(int how, void *data) { PapiW_stopAndPrint(); }
 #endif
 
-// branch: corret psc to prc
-// cache:
-
 // returns -1 if event code does not exist
 int getEnvEventCode(char *event_code) {
 	std::map<std::string, int> event_map = {
@@ -150,14 +147,14 @@ void PapiW_start() {
 		while (token) {
 			int event = getEnvEventCode(token);
 			if (event == -1) {
-				std::cout << "WARNING: " << token
-									<< " is either not a known PAPI event " << std::endl;
+				std::cout << "[Warning] " << token
+									<< " is not a known PAPI event." << std::endl;
 			} else {
-				std::cout << "Measuring " << token << ".." << std::endl;
+				std::cout << "Measuring " << token << std::endl;
 				try {
 					instance->addEvent(event);
 				} catch (std::string &error) {
-					std::cout << "  Error when adding this event: " << error << std::endl;
+					std::cout << "[Error] " << error << std::endl;
 				}
 			}
 			token = strtok(NULL, delim);

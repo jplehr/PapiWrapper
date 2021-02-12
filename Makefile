@@ -1,9 +1,8 @@
-
-PAPI := /opt/papi/install
-
 # Adjust these two variables to your preference.
+PAPI := /opt/papi/install
 #PAPI := /shared/apps/.gcc/4.9/.openmpi/4.0/papi/5.7.0
 #PAPI := /shared/apps/.gcc/9.1/.openmpi/4.0/papi/5.7.0
+COMPILER := gcc
 #COMPILER := gcc4.9.4
 #COMPILER := gcc9.1.0
 #COMPILER := clang10.0.0
